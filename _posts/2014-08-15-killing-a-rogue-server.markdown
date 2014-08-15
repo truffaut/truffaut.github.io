@@ -5,10 +5,12 @@ title:  "Killing a rogue server to free up its port"
 #Killing a rogue server to free up its port
 
 tl;dr run the following, replacing PORT_NUMBER with the blocked port, and PID with the process ID of the process that lsof indicates is using the port:
-```
+
+{% highlight bash %}
 lsof -i :PORT_NUMBER
 sudo kill PID
-```
+{% endhighlight %}
+
 Wait a few moments, run `ps aux | grep PID`. if the process still comes up, then `sudo kill -9 PID`.
 
 ## Long explanation: Process already using a port and you want to know what to do? Read on.
@@ -25,13 +27,14 @@ Start a python simpleHTTPServer on port 8080 with the following command: `python
 
 Now, run `lsof -i :8080` again, and it should produce output similar to the following:
 
-```
-CMD     PID      USER                  NAME
+{% highlight bash %}
+CMD     PID   USER         NAME
 Python  29203 my_username  TCP *:http-alt (LISTEN)
-```
+{% endhighlight %}
+
 (Note: I edited out some of the columns to make the output fit this blog better.)
 
-This response tells us that there is currently one process using port 8080, that the command running it is `Python`, that is has a [Process ID](http://en.wikipedia.org/wiki/Process_identifier) of `29203`, started by `my_username`. If this was a rogue process, we could decide at this point whether or not this was a process we intended to run on port 8080, in which case we'd probably want to leave it alone, or if it was a process that should be terminated, in which case we can use the PID to terminate the process.
+This response tells us that there is currently one process using port 8080, that the command running it is `Python`, that it has a [Process ID](http://en.wikipedia.org/wiki/Process_identifier) of `29203`, started by `my_username`. If this was a rogue process, we could decide at this point whether or not this was a process we intended to run on port 8080, in which case we'd probably want to leave it alone, or if it was a process that should be terminated, in which case we can use the PID to terminate the process.
 
 ## Step 2: Terminating the process using kill
 Yes, if you don't know, there is totally a `kill` command on Unix systems. Confusingly, it's actually an application to send various signals to your processes. Typically the signals you send to processes with `kill` are to ask the process to terminate itself (though there are other signals you can send that have nothing to do with terminating the process), hence the name. We can use signals, combined with the PID gathered from using `lsof` in the previous step, to terminate a process that is using a port that it shouldn't be using.
