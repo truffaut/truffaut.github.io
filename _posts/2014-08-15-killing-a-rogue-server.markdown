@@ -3,7 +3,8 @@ layout: post
 title:  "Killing a rogue server to free up its port"
 ---
 **TL;DR**:
-run the following, replacing PORT_NUMBER with the blocked port, and PID with the process ID of the process that lsof indicates is using the port:
+
+run the following, replacing `PORT_NUMBER` with the blocked port, and `PID` with the process ID of the process that `lsof` indicates is using the port:
 
 {% highlight bash %}
 lsof -i :PORT_NUMBER
