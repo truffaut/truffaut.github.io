@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Killing a rogue server to free up its port"
+title:  "How to fix a port-already-in-use error"
 ---
 **TL;DR**:
 
